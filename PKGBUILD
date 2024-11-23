@@ -25,13 +25,11 @@ _pkg=eslint-plugin-hardhat-internal-rules
 _pkgbase="${_pkg}"
 pkgname="${_pkgbase}"
 _pkgdesc=(
-  'API library built in Rust,'
-  'which exposes a single function,'
-  'which takes the contents of a Solidity source file'
-  'and returns its imports and version pragmas'
+  'Internal linting rules used in the'
+  'Hardhat repository.'
 )
 pkgdesc="${_pkgdesc[*]}"
-_pkgver="1.0.0"
+_pkgver="1.0.2"
 pkgver="${_pkgver}"
 _commit="0f12bd0fa373dbc811ebf7164b4bfeb1f221a4ae"
 pkgrel=1
