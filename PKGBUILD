@@ -31,7 +31,7 @@ _pkgdesc=(
   'and returns its imports and version pragmas'
 )
 pkgdesc="${_pkgdesc[*]}"
-_pkgver="1.0.2"
+_pkgver="1.0.0"
 pkgver="${_pkgver}"
 _commit="0f12bd0fa373dbc811ebf7164b4bfeb1f221a4ae"
 pkgrel=1
@@ -56,8 +56,6 @@ depends=(
 )
 makedepends=(
   'npm'
-  # 'rust'
-  'yarn'
 )
 provides=(
   "${_node}-${_pkg}=${pkgver}"
@@ -97,38 +95,7 @@ elif [[ "${_source}" == "npm" ]]; then
   )
 fi
 
-_android_quirk() {
-  local \
-    _tools_bin \
-    _clang \
-    _compiler_dir \
-    _compiler
-  cd \
-    "${srcdir}/${_tarname}"
-  if [[ "${_os}" == "Android" ]] && \
-     [[ "${_arch}" == "armv7l" ]]; then
-    _clang="$( \
-      command \
-        -v \
-        clang)"
-    _tools_bin="undefined/toolchains/llvm/prebuilt/linux-x86_64/bin"
-    _compiler_dir="${srcdir}/${_tarname}/${_tools_bin}"
-    _compiler="${_compiler_dir}/armv7a-linux-androideabi24-clang"
-    mkdir \
-      -p \
-      "${_compiler_dir}"
-    ln \
-      -s \
-      "${_clang}" \
-      "${_compiler}" || \
-      true
-  fi
-  cd \
-    "${srcdir}/${_tarname}"
-}
-
 prepare() {
-  # _android_quirk
   echo
 }
 
@@ -139,34 +106,8 @@ build() {
     install \
     . || \
     true
-  yarn || \
-    true
-  npm \
-    install \
-    . || \
-    true
-  yarn \
-    install || \
-    true
-  # _android_quirk
   echo \
     "$(pwd)"
-  yarn \
-    run \
-      build
-  # if [[ "${_os}" == "Android" ]] && \
-  #    [[ "${_arch}" == "armv7l" ]]; then
-  #   mv \
-  #     "solidity-analyzer.${_platform}.node" \
-  #     "npm/${_platform}" || \
-  #     true
-  #   cd \
-  #     "npm/${_platform}"
-  #   npm \
-  #     pack
-  #   cd \
-  #     "${srcdir}/${_tarname}"
-  # fi
   npm \
     pack
 }
@@ -182,18 +123,6 @@ package() {
   )
   cd \
     "${srcdir}/${_tarname}"
-  # if [[ "${_os}" == "Android" ]] && \
-  #    [[ "${_arch}" == "armv7l" ]]; then
-  #   cd \
-  #     "npm/${_platform}"
-  #   _tgz="${_pub}-${_pkg}-${_platform}-${_pkgver}.tgz"
-  #   npm \
-  #     "${_npm_options[@]}" \
-  #     install \
-  #       "${_tgz}"
-  #   cd \
-  #     "${srcdir}/${_tarname}"
-  # fi
   _tgz="${_pub}-${_pkg}-${_pkgver}.tgz"
   npm \
     "${_npm_options[@]}" \
