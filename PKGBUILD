@@ -30,6 +30,12 @@
 #   Filipe Bertelli
 #     <filipebertelli@tutanota.com>
 
+_os="$(
+  uname \
+    -o)"
+_arch="$(
+  uname \
+    -m)"
 _evmfs_available="$(
   command \
     -v \
@@ -73,19 +79,18 @@ if [[ ! -v "_archive_format" ]]; then
     fi
   fi
 fi
-
-_offline='false'
-_source='ur'
-_ns="NomicFoundation"
-_pub="nomicfoundation"
-_os="$( \
-  uname \
-    -o)"
-_arch="$( \
-  uname \
-    -m)"
+if [[ ! -v "_pub" ]]; then
+  _pub="nomicfoundation"
+  if [[ "${_os}" == "Android" ]]; then
+    _pub="nomicfoundation"
+  fi
+fi
+if [[ ! -v "_ns" ]]; then
+  _ns="NomicFoundation"
+  # Android support
+  _ns="themartiancompany"
+fi
 if [[ "${_os}" == "Android" ]]; then
-  _source="ur"
   if [[ "${_arch}" == "armv7l" ]]; then
     _platform="android-arm-eabi"
   fi
@@ -112,9 +117,6 @@ arch=(
   'powerpc'
   'pentium4'
 )
-if [[ "${_source}" == "ur" ]]; then
-  _ns="themartiancompany"
-fi
 _http="https://${_git_service}.com"
 url="${_http}/${_ns}/${_pkgbase}"
 license=(
