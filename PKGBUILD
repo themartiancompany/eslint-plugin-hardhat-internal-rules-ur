@@ -136,6 +136,16 @@ elif [[ "${_os}" == "Android" ]]; then
     "${_node}"
   )
 fi
+if [[ "${_git}" == "true" ]]; then
+  makedepends+=(
+    "git"
+  )
+fi
+if [[ "${_evmfs}" == "true" ]]; then
+  makedepends+=(
+    "evmfs"
+  )
+fi
 provides=(
   "${_node}-${_pkg}=${pkgver}"
 )
@@ -160,7 +170,7 @@ _bundle_sig_sum="065c0209a161d7f9a4000b512cc2aa35683e086986fc82dd0649a98ee27b659
 _gitlab_sum="be36bae17e6879582057a5cead30e9fb90d701f99e2b5db1e32b27ca1e51054f"
 _gitlab_sig_sum="69ef172a077d5a0dcbac8083836417b0f2221b1a8e1607deac063b51a1599366"
 _github_sum='0319169b62cfd5d7dd8a453f4ad8632c4dfea56eb308b70164163d9243736ec6'
-_github_sig_sum="ea24b89cdd8a7ea4bfb99bd0cbdc900a70537fa0c5c0e23b2752e7b83128b5b5"
+_github_sig_sum="3ff957722ef127b40560d53ad39afdfdde0e87091ace2ec8c7cf41db36e7923a"
 if [[ "${_git_service}" == "github" ]]; then
   _evmfs_sum="${_github_sum}"
   _evmfs_sig_sum="${_github_sig_sum}"
@@ -250,6 +260,40 @@ validpgpkeys=(
   #   <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
   '12D8E3D7888F741E89F86EE0FEC8567A644F1D16'
 )
+
+_git_unbundle() {
+  local \
+    _tarname="${1}" \
+    _module \
+    _bundle \
+    _repo \
+    _msg=()
+  _bundle="${srcdir}/${_tarname}.bundle"
+  _repo="${srcdir}/${_tarname}"
+  _msg=(
+    "Cloning '${_bundle}' into '${_repo}'."
+  )
+  msg \
+    "${_msg[*]}"
+  git \
+    clone \
+      "${_bundle}" \
+      "${_repo}" || \
+  git \
+    -C \
+      "${_repo}" \
+      pull || \
+    true
+}
+
+prepare() {
+  if [[ "${_evmfs}" == "true" ]]; then
+    if [[ "${_git}" == "true" ]]; then
+      _git_unbundle \
+        "${_tarname}"
+    fi
+  fi
+}
 
 build() {
   cd \
