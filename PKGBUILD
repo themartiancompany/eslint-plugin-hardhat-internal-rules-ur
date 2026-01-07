@@ -155,12 +155,12 @@ _tarfile="${_tarname}.${_archive_format}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
 fi
-_bundle_sum="SKIP"
-_bundle_sig_sum="SKIP"
-_gitlab_sum="SKIP"
-_gitlab_sig_sum="SKIP"
+_bundle_sum="07e61eefafa3c68fe079596b407592d6992eb1f857746b4d876e0dd8b9df0335"
+_bundle_sig_sum="065c0209a161d7f9a4000b512cc2aa35683e086986fc82dd0649a98ee27b6597"
+_gitlab_sum="be36bae17e6879582057a5cead30e9fb90d701f99e2b5db1e32b27ca1e51054f"
+_gitlab_sig_sum="69ef172a077d5a0dcbac8083836417b0f2221b1a8e1607deac063b51a1599366"
 _github_sum='0319169b62cfd5d7dd8a453f4ad8632c4dfea56eb308b70164163d9243736ec6'
-_github_sig_sum="SKIP"
+_github_sig_sum="ea24b89cdd8a7ea4bfb99bd0cbdc900a70537fa0c5c0e23b2752e7b83128b5b5"
 if [[ "${_git_service}" == "github" ]]; then
   _evmfs_sum="${_github_sum}"
   _evmfs_sig_sum="${_github_sig_sum}"
