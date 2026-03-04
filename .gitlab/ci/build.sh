@@ -280,12 +280,10 @@ _gl_dl_retrieve() {
     _output_file \
     _msg=() \
     _token_missing \
-    _home
-  _home="/home/user"
-  _output_file="${_home}/$( \
+  _output_file="${HOME}/$( \
     basename \
       "${_url#https://}")"
-  _token_private="${_home}/.config/gitlab.com/default.txt"
+  _token_private="${HOME}/.config/gitlab.com/default.txt"
   _token_missing="false"
   if [[ ! -e "${_token_private}" ]]; then
     _token_missing="true"
