@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0
 
 #    ----------------------------------------------------------------------
-#    Copyright © 2022, 2023, 2024, 2025  Pellegrino Prevete
+#    Copyright © 2022, 2023, 2024, 2025, 2026  Pellegrino Prevete
 #
 #    All rights reserved
 #    ----------------------------------------------------------------------
@@ -139,8 +139,8 @@ _requirements() {
     _fur_mini_opts=() \
     _fur_opts=() \
     _pkgname \
-    _home
-  _home="/home/user"
+    _fur_release_latest \
+    _reallymakepkg_release_latest
   _pkgname="${pkg%-ur}"
   _fur_mini_opts+=(
     "${platform}"
@@ -152,6 +152,8 @@ _requirements() {
     "fur" \
     "${_fur_mini_opts[@]}"
   _fur_release="0.0.1.1.1.1.1.1.1.1.1.1.1"
+  _fur_release_latest="1.0.0.0.0.0.0.0.0.0.1.1-5"
+  _reallymakepkg_release_latest="1.2.5-9"
   _fur_opts+=(
     -v
     -p
@@ -167,11 +169,17 @@ _requirements() {
   _gur_mini \
     "${ns}" \
     "fur" \
-    "1.0.0.0.0.0.0.0.0.0.0.0.0.1.1.1.1-2"
+    "${_fur_release_latest}" || \
+  true
+  _gur_mini \
+    "${ns}" \
+    "reallymakepkg" \
+    "${_reallymakepkg_release_latest}" || \
+  true
   # ohoh
   recipe-get \
     -v \
-    "${_home}/${_pkgname}/PKGBUILD" \
+    "/home/user/${_pkgname}/PKGBUILD" \
     "_commit"
   _commit="$( \
     recipe-get \
@@ -182,7 +190,7 @@ _requirements() {
     "${_pkgname}" \
     "${_commit}"
   mv \
-    "${_home}/${_pkgname}-${_commit}.tar.gz" \
+    "${HOME}/${_pkgname}-${_commit}.tar.gz" \
     "/home/user/${_pkgname}"
 }
 
@@ -277,7 +285,7 @@ _gl_dl_retrieve() {
     _curl_opts=() \
     _output_file \
     _msg=() \
-    _token_missing \
+    _token_missing
   _output_file="${HOME}/$( \
     basename \
       "${_url#https://}")"
