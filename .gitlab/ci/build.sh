@@ -42,9 +42,7 @@ _gur_mini() {
     _api \
     _url \
     _msg=() \
-    _sig \
-    _home
-  _home="/home/user"
+    _sig
   _msg=(
     "Downloading '${_pkg}'"
     "binary CI release"
@@ -57,7 +55,7 @@ _gur_mini() {
     "https://gitlab.com/api/v4/projects/${_ns}%2F${_pkg}-ur"
   _project_id="$( \
     cat \
-      "${_home}/${_ns}%2F${_pkg}-ur" | \
+      "${HOME}/${_ns}%2F${_pkg}-ur" | \
       jq \
         '.id')"
   _api="https://gitlab.com/api/v4"
@@ -66,7 +64,7 @@ _gur_mini() {
     "${_url}"
   _urls=( $( \
     cat \
-      "${_home}/releases" | \
+      "${HOME}/releases" | \
       jq \
         '.[0].assets.links.[]' | \
         jq \
@@ -77,22 +75,22 @@ _gur_mini() {
     _file="$( \
       basename \
         "${_url}")"
-    _output_file="$(pwd)/${_file}"
+    _output_file="${PWD}/${_file}"
     _gl_dl_retrieve \
       "${_url}"
   done
-  for _sig in "${_home}/"*".pkg.tar.xz.sig"; do
+  for _sig in "${HOME}/"*".pkg.tar.xz.sig"; do
     gpg \
       --verify \
         "${_sig}"
   done
   rm \
     -rf \
-    "${_home}/"*".pkg.tar.xz.sig"
+    "${HOME}/"*".pkg.tar.xz.sig"
   pacman \
     -Udd \
     --noconfirm \
-    "${_home}/"*".pkg.tar.xz"
+    "${HOME}/"*".pkg.tar.xz"
 }
 
 _fur_mini() {
