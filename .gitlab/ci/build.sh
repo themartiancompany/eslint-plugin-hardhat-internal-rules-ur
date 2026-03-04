@@ -42,7 +42,9 @@ _gur_mini() {
     _api \
     _url \
     _msg=() \
-    _sig
+    _sig \
+    _home
+  _home="/home/user"
   _msg=(
     "Downloading '${_pkg}'"
     "binary CI release"
@@ -55,7 +57,7 @@ _gur_mini() {
     "https://gitlab.com/api/v4/projects/${_ns}%2F${_pkg}-ur"
   _project_id="$( \
     cat \
-      "${HOME}/${_ns}%2F${_pkg}-ur" | \
+      "${_home}/${_ns}%2F${_pkg}-ur" | \
       jq \
         '.id')"
   _api="https://gitlab.com/api/v4"
@@ -64,7 +66,7 @@ _gur_mini() {
     "${_url}"
   _urls=( $( \
     cat \
-      "${HOME}/releases" | \
+      "${_home}/releases" | \
       jq \
         '.[0].assets.links.[]' | \
         jq \
@@ -79,18 +81,18 @@ _gur_mini() {
     _gl_dl_retrieve \
       "${_url}"
   done
-  for _sig in "${HOME}/"*".pkg.tar.xz.sig"; do
+  for _sig in "${_home}/"*".pkg.tar.xz.sig"; do
     gpg \
       --verify \
         "${_sig}"
   done
   rm \
     -rf \
-    "${HOME}/"*".pkg.tar.xz.sig"
+    "${_home}/"*".pkg.tar.xz.sig"
   pacman \
     -Udd \
     --noconfirm \
-    "${HOME}/"*".pkg.tar.xz"
+    "${_home}/"*".pkg.tar.xz"
 }
 
 _fur_mini() {
@@ -138,7 +140,9 @@ _requirements() {
   local \
     _fur_mini_opts=() \
     _fur_opts=() \
-    _pkgname
+    _pkgname \
+    _home
+  _home="/home/user"
   _pkgname="${pkg%-ur}"
   _fur_mini_opts+=(
     "${platform}"
@@ -180,7 +184,7 @@ _requirements() {
     "${_pkgname}" \
     "${_commit}"
   mv \
-    "${HOME}/${_pkgname}-${_commit}.tar.gz" \
+    "${_home}/${_pkgname}-${_commit}.tar.gz" \
     "/home/user/${_pkgname}"
 }
 
@@ -275,11 +279,13 @@ _gl_dl_retrieve() {
     _curl_opts=() \
     _output_file \
     _msg=() \
-    _token_missing
-  _output_file="${HOME}/$( \
+    _token_missing \
+    _home
+  _home="/home/user"
+  _output_file="${_home}/$( \
     basename \
       "${_url#https://}")"
-  _token_private="${HOME}/.config/gitlab.com/default.txt"
+  _token_private="${_home}/.config/gitlab.com/default.txt"
   _token_missing="false"
   if [[ ! -e "${_token_private}" ]]; then
     _token_missing="true"
