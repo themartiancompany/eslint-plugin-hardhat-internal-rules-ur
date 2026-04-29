@@ -41,6 +41,32 @@ _os="$(
 _arch="$(
   uname \
     -m)"
+if [[ "${_os}" == "Android" ]]; then
+  _libc="ndk-sysroot"
+  _compiler="clang"
+  _libcompiler="llvm-libs"
+elif [[ "${_os}" == "GNU/Linux" ]]; then
+  _libc="glibc"
+  _compiler="gcc"
+  _libcompiler="libgcc"
+elif [[ "${_os}" == "Msys" ]]; then
+  _libc="msys2-w32api-runtime"
+  _libc_headers="msys2-w32api-headers"
+  _compiler="gcc"
+  _libcompiler="gcc-libs"
+  _sh="sh"
+else
+  _msg=(
+    "Unknown os '${_os}'."
+  )
+  msg \
+    "${_msg[*]}"
+  _libc="msys2-w32api-runtime"
+  _libc_headers="msys2-w32api-headers"
+  _compiler="gcc"
+  _libcompiler="gcc-libs"
+  _sh="sh"
+fi
 _evmfs_available="$(
   command \
     -v \
@@ -114,7 +140,7 @@ pkgdesc="${_pkgdesc[*]}"
 _pkgver="1.0.2"
 pkgver="${_pkgver}"
 _commit="0f12bd0fa373dbc811ebf7164b4bfeb1f221a4ae"
-pkgrel=17
+pkgrel=18
 arch=(
   'x86_64'
   'arm'
@@ -133,6 +159,7 @@ depends=(
   "${_node}"
 )
 makedepends=(
+  # "${_libc}"
 )
 if [[ "${_os}" == "GNU/Linux" ]]; then
   makedepends+=(
@@ -141,6 +168,14 @@ if [[ "${_os}" == "GNU/Linux" ]]; then
 elif [[ "${_os}" == "Android" ]]; then
   makedepends+=(
     "${_node}"
+  )
+elif [[ "${_os}" == "Msys"  ]]; then
+  makedepends+=(
+    "npm"
+  )
+else
+  makedepends+=(
+    "npm"
   )
 fi
 if [[ "${_git}" == "true" ]]; then

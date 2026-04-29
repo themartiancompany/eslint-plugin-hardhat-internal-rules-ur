@@ -2310,7 +2310,7 @@ jobs:
                 " " \
               "PKGBUILD" \
               "makedepends" > \
-            "${HOME}/makedepends"; \
+            "${HOME}/makedepends";
           # ( _evmfs="false" \
           #     recipe-get \
           #       -o \
@@ -2327,7 +2327,8 @@ jobs:
             echo \
               "${_mingw_name}" >> \
               "${HOME}/makedepends-mingw"; \
-          done
+          done || \
+          true
           for _pkg in $(cat "${HOME}/makedepends"); do \
             _depend_name="$( \
                 version-split \
