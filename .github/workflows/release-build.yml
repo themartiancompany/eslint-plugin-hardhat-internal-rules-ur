@@ -2501,6 +2501,7 @@ jobs:
               recipe-get \
                 "PKGBUILD" \
                 "pkgbase")" && \
+          PKGEXT=".pkg.tar.xz" \
           arch="${_arch}" \
           _evmfs="false" \
           _git="false" \
