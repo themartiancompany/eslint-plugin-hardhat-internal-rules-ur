@@ -140,11 +140,13 @@ pkgdesc="${_pkgdesc[*]}"
 _pkgver="1.0.2"
 pkgver="${_pkgver}"
 _commit="0f12bd0fa373dbc811ebf7164b4bfeb1f221a4ae"
-pkgrel=19
+pkgrel=20
 arch=(
   'x86_64'
   'arm'
   'aarch64'
+  'armv8l'
+  'armv7l'
   'i686'
   'mips'
   'powerpc'
